@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  seq:
+    image: datalust/seq:latest
+
+  pgdata:
+    image: postgres:latest
+    restart: always
+    
+  courses-api:
+    image: ${REGISTRY:-ted}/courses.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Courses/Courses.Api/Dockerfile
+    depends_on:
+      - pgdata
+        
+  courses-workerservice:
+    image: ${REGISTRY:-ted}/courses.workerservice:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Courses/Courses.WorkerService/Dockerfile
+    depends_on:
+      - pgdata
+      - courses-api

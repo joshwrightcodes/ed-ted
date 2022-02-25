@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  seq:
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5340:80"
+
+  pgdata:
+    volumes:
+      - ted-pgdata:/var/opt/postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=Ted.Courses
+  
+  courses-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionStrings:DefaultConnection=${TED_PG_CS_COURSES:-Server=localhost;Username=postgres;Password=postgres;Database=Ted.Courses}
+
+  courses-workerservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionStrings:DefaultConnection=${TED_PG_CS_COURSES:-Server=localhost;Username=postgres;Password=postgres;Database=Ted.Courses}
+
+volumes:
+  ted-pgdata:
+    external: false

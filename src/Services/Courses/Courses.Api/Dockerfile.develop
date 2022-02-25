@@ -1,0 +1,20 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0
+ARG BUILD_CONFIGURATION=Debug
+ENV DOTNET_ENVIRONMENT=Development
+EXPOSE 80
+
+WORKDIR /src
+
+COPY ["Shared/DDD/Shared.Domain/Shared.Domain.csproj", "Shared/DDD/Shared.Domain/"]
+COPY ["Shared/DDD/Shared.Application/Shared.Application.csproj", "Shared/DDD/Shared.Application/"]
+COPY ["Services/Courses/Courses.Domain/Courses.Domain.csproj", "Services/Courses/Courses.Domain/"]
+COPY ["Services/Courses/Courses.Application/Courses.Application.csproj", "Services/Courses/Courses.Application/"]
+COPY ["Services/Courses/Courses.Infrastructure/Courses.Infrastructure.csproj", "Services/Courses/Courses.Infrastructure/"]
+COPY ["Services/Courses/Courses.Api/Courses.Api.csproj", "Services/Courses/Courses.Api/"]
+RUN dotnet restore Services/Courses/Courses.Api/Courses.Api.csproj
+
+COPY . .
+WORKDIR /src/Services/Courses/Courses.Api
+RUN dotnet build -c $BUILD_CONFIGURATION
+
+ENTRYPOINT ["dotnet", "run", "--no-build", "--no-launch-profile", "-c", "$BUILD_CONFIGURATION", "--"]

@@ -1,5 +1,8 @@
 namespace Ted.Shared.Domain.Events;
 
+/// <summary>
+/// Base class for defining Domain Events within the application.
+/// </summary>
 public abstract class DomainEvent
 {
     /// <summary>

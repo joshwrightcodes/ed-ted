@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   seq:
@@ -7,27 +7,47 @@ services:
     ports:
       - "5340:80"
 
-  pgdata:
+  db-pgsql:
     volumes:
-      - ted-pgdata:/var/opt/postgresql
+      - ted-db-pgsql:/var/opt/postgresql
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=Ted.Courses
   
+  db-mongo:
+    volumes:
+      - ted-db-mongodb:/var/opt/mongodb
+    ports:
+      - "27017:27017"
+
   courses-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionStrings:DefaultConnection=${TED_PG_CS_COURSES:-Server=localhost;Username=postgres;Password=postgres;Database=Ted.Courses}
+    ports:
+      - "5001:80"
 
   courses-workerservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - ConnectionStrings:DefaultConnection=${TED_PG_CS_COURSES:-Server=localhost;Username=postgres;Password=postgres;Database=Ted.Courses}
+    ports:
+      - "5101:80"
 
-volumes:
-  ted-pgdata:
-    external: false
+  enrolment-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+    ports:
+      - "5002:80"
+
+  enrolment-workerservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+    ports:
+      - "5102:80"

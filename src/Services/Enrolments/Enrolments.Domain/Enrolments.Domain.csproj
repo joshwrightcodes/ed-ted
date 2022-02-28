@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <AssemblyName>Ted.Services.Courses.Infrastructure</AssemblyName>
-        <RootNamespace>Ted.Services.Courses.Infrastructure</RootNamespace>
+        <AssemblyName>Ted.Services.Enrolment.Domain</AssemblyName>
+        <RootNamespace>Ted.Services.Enrolment.Domain</RootNamespace>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <NeutralLanguage>en</NeutralLanguage>
@@ -11,7 +11,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        
         <PackageReference Include="Roslynator.Analyzers" Version="4.0.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -31,11 +30,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Persistence\Configurations" />
+      <ProjectReference Include="..\..\..\Shared\DDD\Shared.Domain\Shared.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Courses.Application\Courses.Application.csproj" />
+      <Folder Include="Entities" />
     </ItemGroup>
 
 </Project>

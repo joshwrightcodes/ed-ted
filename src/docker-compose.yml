@@ -1,12 +1,24 @@
-version: '3.8'
+version: '3.9'
 
 services:
   seq:
-    image: datalust/seq:latest
-
-  pgdata:
-    image: postgres:latest
+    image: datalust/seq:${SEQ-TAG:-latest}
     restart: always
+    networks:
+      - ted-be-courses
+      - ted-bff
+
+  db-pgsql:
+    image: postgres:${PG-TAG:-latest}
+    restart: always
+    networks:
+      - ted-be-courses
+        
+  db-mongo:
+    image: mongo:${MONGO-TAG:-latest}
+    restart: always
+    networks:
+      - ted-be-enrolment
     
   courses-api:
     image: ${REGISTRY:-ted}/courses.api:${PLATFORM:-linux}-${TAG:-latest}
@@ -14,7 +26,10 @@ services:
       context: .
       dockerfile: Services/Courses/Courses.Api/Dockerfile
     depends_on:
-      - pgdata
+      - db-pgsql
+    networks:
+      - ted-be-courses
+      - ted-bff
         
   courses-workerservice:
     image: ${REGISTRY:-ted}/courses.workerservice:${PLATFORM:-linux}-${TAG:-latest}
@@ -22,5 +37,41 @@ services:
       context: .
       dockerfile: Services/Courses/Courses.WorkerService/Dockerfile
     depends_on:
-      - pgdata
-      - courses-api
+      - db-pgsql
+    networks:
+      - ted-be-courses
+      
+  enrolment-api:
+    image: ${REGISTRY:-ted}/enrolment.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Enrolment/Enrolment.Api/Dockerfile
+    depends_on: 
+      - db-mongo
+    networks:
+      - ted-be-enrolment
+      - ted-bff
+
+  enrolment-workerservice:
+    image: ${REGISTRY:-ted}/enrolment.workerservice:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Enrolment/Enrolment.WorkerService/Dockerfile
+    depends_on:
+      - db-mongo
+    networks:
+      - ted-be-enrolment
+
+networks:
+  ted-be-courses:
+    name: ted-be-courses
+  ted-be-enrolment:
+    name: ted-be-enrolment
+  ted-bff:
+    name: ted-bff
+
+volumes:
+  ted-db-pgsql:
+    external: false
+  ted-db-mongodb:
+    external: false

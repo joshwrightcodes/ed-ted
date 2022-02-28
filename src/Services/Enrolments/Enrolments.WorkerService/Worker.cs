@@ -1,4 +1,4 @@
-namespace Ted.Services.Courses.WorkerService;
+namespace Enrolment.WorkerService;
 
 public class Worker : BackgroundService
 {

@@ -1,6 +1,6 @@
 using Ted.Shared.Application;
 
-namespace SafetyCulture.Ed.Enrolment.Application;
+namespace Ted.Services.Courses.Application;
 
 public interface IApplicationDbContext : IBaseDbContext
 {

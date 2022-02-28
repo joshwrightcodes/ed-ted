@@ -1,17 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <AssemblyName>Ted.Services.Courses.Infrastructure</AssemblyName>
-        <RootNamespace>Ted.Services.Courses.Infrastructure</RootNamespace>
+        <AssemblyName>Ted.Services.Enrolment.Api</AssemblyName>
+        <RootNamespace>Ted.Services.Enrolment.Api</RootNamespace>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <NeutralLanguage>en</NeutralLanguage>
         <Nullable>enable</Nullable>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>dotnet-Enrolment.Api-27A3FCCF-B746-43D5-9FF4-4B697795EC3C</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
-        
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
+        <PackageReference Include="Puma.Security.Rules" Version="2.4.11">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="Roslynator.Analyzers" Version="4.0.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -31,11 +40,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Persistence\Configurations" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\Courses.Application\Courses.Application.csproj" />
+      <ProjectReference Include="..\..\..\Shared\DDD\Shared.Api\Shared.Api.csproj" />
+      <ProjectReference Include="..\Enrolments.Application\Enrolments.Application.csproj" />
+      <ProjectReference Include="..\Enrolments.Infrastructure\Enrolments.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

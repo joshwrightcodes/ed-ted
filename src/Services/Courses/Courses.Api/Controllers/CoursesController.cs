@@ -1,5 +1,7 @@
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Ted.Shared.Api.Controllers;
+using Ted.Shared.Application.Exceptions;
 
 namespace Ted.Services.Courses.Api.Controllers;
 
@@ -108,7 +110,13 @@ public partial class CoursesController : BaseApiController
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
     public async Task<IActionResult> CreateCourseAsync()
     {
-        throw new NotImplementedException();
+        throw new ValidationException(new List<ValidationFailure>
+        {
+            new ValidationFailure("some property", "a validation error message"),
+            new ValidationFailure("some property", "another validation error message"),
+            new ValidationFailure("some property", "yet another validation error message"),
+            new ValidationFailure("some other property", "a different validation error"),
+        });
     }
 
     /// <summary>
